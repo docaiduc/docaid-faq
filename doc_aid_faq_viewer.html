@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOC-AID FAQ Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h2 {
+      color: #0056b3;
+    }
+    details {
+      margin-bottom: 10px;
+      background: white;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <h2>📘 DOC-AID FAQs</h2>
+  <div id="faq-list">Loading FAQs...</div>
+
+  <script>
+    fetch("https://script.google.com/macros/s/AKfycbxLS0LH2d70UbAsA5nqwGJfIY4UhmHqov1dvtdfSpmTQDH1eCn2kQda3vAwBxHIXt67/exec")
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('faq-list');
+        container.innerHTML = '';
+        data.forEach(faq => {
+          const item = document.createElement('details');
+          const summary = document.createElement('summary');
+          summary.textContent = faq.Question;
+          const content = document.createElement('div');
+          content.innerHTML = '<p>' + (faq.Answer || 'No answer provided.') + '</p>';
+          item.appendChild(summary);
+          item.appendChild(content);
+          container.appendChild(item);
+        });
+      })
+      .catch(err => {
+        document.getElementById('faq-list').innerText = 'Failed to load FAQs.';
+      });
+  </script>
+</body>
+</html>
